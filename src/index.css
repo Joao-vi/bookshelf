@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply text-headline;
+  }
+  body {
+    @apply bg-background text-paragraph font-semibold;
+  }
+
+  button {
+    @apply text-text-button font-medium p-4;
+  }
+}
