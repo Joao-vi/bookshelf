@@ -1,3 +1,4 @@
+import { Input, Button } from "components/elements";
 import { FormEvent } from "react";
 import { FormElements, OnSubmitProps } from "./types";
 
@@ -14,17 +15,11 @@ export const RegisterForm = ({ onSubmit }: RegisterFormProps) => {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4 items-center">
-      <div>
-        <label htmlFor="username">Username:</label>
-        <input type="text" id="username" />
-      </div>
-      <div>
-        <label htmlFor="password">Password:</label>
-        <input type="password" id="password" />
-      </div>
-      <button type="submit" className="border p-2 rounded">
+      <Input label="Username" id="username" type="text" />
+      <Input label="Password" id="password" type="password" />
+      <Button type="submit" className="self-stretch mt-3">
         Submit
-      </button>
+      </Button>
     </form>
   );
 };

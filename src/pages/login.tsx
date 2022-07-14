@@ -2,6 +2,8 @@ import { Button, Logo } from "components/elements";
 import { LoginForm, OnSubmitProps, RegisterForm } from "components/modules";
 import { useState } from "react";
 
+import { Spinner, X } from "phosphor-react";
+
 import Modal from "react-modal";
 
 import { Styles } from "react-modal";
@@ -12,16 +14,18 @@ const modalStyles: Styles = {
     transition: "background 0.3s cubic-bezier(0.6, 0.4, 0, 1)",
   },
   content: {
-    maxWidth: "40rem",
-    height: "100%",
-    maxHeight: "40rem",
-    margin: "0 auto",
+    maxWidth: "35rem",
+    height: "max-content",
+    margin: "auto",
+    background: "#f9f4ef",
+    inset: 0,
+    padding: "40px 10px",
   },
 };
 
 type IsOpen = "none" | "register" | "login";
 
-export function Home() {
+export function LoginPage() {
   const [isOpen, setIsOpen] = useState<IsOpen>("none");
 
   const handleLogin = (props: OnSubmitProps) => {
@@ -32,12 +36,14 @@ export function Home() {
     console.log(props);
   };
   return (
-    <main className="h-screen flex flex-col items-center justify-center gap-6">
-      <Logo />
+    <main className="h-screen flex flex-col items-center justify-center gap-4">
+      <Logo width="80" height="80" />
       <h1 className="font-bold text-4xl">Bookshelf</h1>
       <div className="flex  gap-4">
         <Button onClick={() => setIsOpen("login")}>Login</Button>
-        <Button onClick={() => setIsOpen("register")}>Register</Button>
+        <Button onClick={() => setIsOpen("register")} variant="secondary">
+          Register
+        </Button>
       </div>
 
       <Modal
@@ -47,13 +53,13 @@ export function Home() {
         contentLabel="Registration form"
       >
         <main className="h-full flex flex-col items-center gap-3">
-          <header>Register</header>
-          <button
+          <header className="font-extrabold text-3xl mb-3">Register</header>
+          <Button
             onClick={() => setIsOpen("none")}
-            className="absolute right-6 border p-2 rounded"
+            className="absolute top-3 right-6 px-[10px] py-[12px] bg-button-secondary"
           >
-            Close
-          </button>
+            <X color="black" weight="bold" />
+          </Button>
 
           <RegisterForm onSubmit={handleRegister} />
         </main>
@@ -66,13 +72,14 @@ export function Home() {
         ariaHideApp={isOpen !== "login"}
       >
         <main className="h-full flex flex-col items-center gap-3">
-          <header>Login</header>
-          <button
+          <header className="font-extrabold text-3xl mb-3">Login</header>
+          <Button
             onClick={() => setIsOpen("none")}
-            className="absolute right-6 border p-2 rounded"
+            className="absolute top-3 right-6 px-[10px] py-[12px]"
+            variant="secondary"
           >
-            Close
-          </button>
+            <X color="black" weight="bold" />
+          </Button>
 
           <LoginForm onSubmit={handleLogin} />
         </main>

@@ -1,3 +1,5 @@
+import { Button, Input } from "components/elements";
+import { Spinner } from "phosphor-react";
 import { FormEvent } from "react";
 import { FormElements, OnSubmitProps } from "./types";
 
@@ -13,18 +15,13 @@ export const LoginForm = ({ onSubmit }: LoginFormProps) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4 items-center">
-      <div>
-        <label htmlFor="username">Username:</label>
-        <input type="text" id="username" />
-      </div>
-      <div>
-        <label htmlFor="password">Password:</label>
-        <input type="password" id="password" />
-      </div>
-      <button type="submit" className="border p-2 rounded">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-2 items-center">
+      <Input label="Username" id="username" type="text" />
+      <Input label="Password" id="password" type="password" />
+      <Button type="submit" className="self-stretch mt-3 flex justify-center">
         Submit
-      </button>
+        {/* <Spinner size={22} weight="bold" className="spinner-animation" aria-label="loading" /> */}
+      </Button>
     </form>
   );
 };
