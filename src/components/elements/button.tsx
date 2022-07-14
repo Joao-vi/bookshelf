@@ -12,10 +12,14 @@ export const Button = (props: ButtonProps) => {
     <button
       {...rest}
       disabled={isLoading}
-      className={`bg-button rounded px-4 py-2 
-      hover-shadow
-      ${variant === "secondary" && "bg-button-secondary text-headline"} 
+      className={` rounded px-4 py-2 
       [&_svg]:text-paragraph
+      hover-shadow
+      ${
+        variant === "secondary"
+          ? "bg-button-secondary text-headline"
+          : "bg-button"
+      } 
       ${isLoading ? "bg-[#b7b4af] cursor-not-allowed" : ""}
       ${props.className}
       `}

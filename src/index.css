@@ -45,4 +45,8 @@
       transform: rotate(360deg);
     }
   }
+
+  .overflow-text {
+    @apply after:content-[''] after:absolute after:bottom-0 after:right-0 after:h-[24px] after:w-[50%] after:bg-[linear-gradient(90deg,transparent,#eaddcf)];
+  }
 }
