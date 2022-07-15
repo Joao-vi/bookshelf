@@ -31,22 +31,11 @@ const BrowsePage = () => {
     const { search } = e.currentTarget.elements as SearchFormElements;
 
     setQuery(search.value);
-  };
-
-  useEffect(() => {
-    if (!query.trim().length) {
-      return;
-    }
 
     setStatus("loading");
-    client<ResponseAPI>(`volumes?q=${encodeURIComponent(query)}`).then(
+    client<ResponseAPI>(`volumes?q=${encodeURIComponent(search.value)}`).then(
       (data) => {
-        const fData = {
-          ...data,
-          items: handleFormatData(data.items),
-        };
-
-        setData(fData);
+        setData({ ...data, items: handleFormatData(data.items) });
         setStatus("success");
       },
       (error) => {
@@ -54,7 +43,7 @@ const BrowsePage = () => {
         setError(error);
       }
     );
-  }, [query]);
+  };
 
   return (
     <div className="flex flex-col gap-4 justify-center items-center min-h-screen px-4">
@@ -78,7 +67,7 @@ const BrowsePage = () => {
       <section className="flex flex-wrap gap-3 items-center justify-items-stretch">
         {status === "success" ? (
           data?.items.length ? (
-            data.items.map((item, index) => <Book key={index} {...item} />)
+            data.items.map((item, index) => <Book {...item} />)
           ) : (
             <p>No books found. Try another search.</p>
           )

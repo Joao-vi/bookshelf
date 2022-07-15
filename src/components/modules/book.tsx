@@ -12,7 +12,7 @@ const Book = (props: Books["volumeInfo"]) => {
       <div className=" self-start w-full flex flex-col gap-2">
         <header>
           <div className="flex justify-between">
-            <h1 className="font-bold text-xl">The Lion King </h1>
+            <h1 className="font-bold text-xl">{props.title}</h1>
             <div className="font-semibold text-highlight">
               <span>{props.language}</span> / <span>{props.publishedDate}</span>
             </div>
