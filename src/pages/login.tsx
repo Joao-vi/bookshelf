@@ -87,7 +87,11 @@ export function LoginPage() {
             <X color="black" weight="bold" />
           </Button>
 
-          <RegisterForm onSubmit={handleRegister} />
+          <RegisterForm
+            onSubmit={handleRegister}
+            isLoading={status === "loading"}
+            isError={status === "error"}
+          />
         </main>
       </Modal>
 
