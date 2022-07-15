@@ -15,8 +15,13 @@ export const RegisterForm = ({ onSubmit }: RegisterFormProps) => {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4 items-center">
-      <Input label="Username" id="username" type="text" />
-      <Input label="Password" id="password" type="password" />
+      <Input label="Username" id="username" type="text" autoFocus />
+      <Input
+        label="Password"
+        id="password"
+        type="password"
+        autoComplete="current-password"
+      />
       <Button type="submit" className="self-stretch mt-3">
         Submit
       </Button>

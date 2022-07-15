@@ -7,11 +7,14 @@ import { Spinner, X } from "phosphor-react";
 import Modal from "react-modal";
 
 import { Styles } from "react-modal";
+import { login, register } from "services/auth";
+import toast from "react-hot-toast";
 
 const modalStyles: Styles = {
   overlay: {
     background: "rgba(17, 21, 24, 0.45)",
     transition: "background 0.3s cubic-bezier(0.6, 0.4, 0, 1)",
+    backdropFilter: "blur(4px)",
   },
   content: {
     maxWidth: "35rem",
@@ -24,21 +27,43 @@ const modalStyles: Styles = {
 };
 
 type IsOpen = "none" | "register" | "login";
+type Status = "idle" | "loading" | "error";
 
 export function LoginPage() {
   const [isOpen, setIsOpen] = useState<IsOpen>("none");
+  const [status, setStatus] = useState<Status>("idle");
+  const [error, setError] = useState("");
 
-  const handleLogin = (props: OnSubmitProps) => {
-    console.log(props);
+  const handleLogin = async (props: OnSubmitProps) => {
+    setStatus("loading");
+    const user = await login(props).catch((error) => {
+      setStatus("error");
+      toast.error(error);
+    });
   };
 
   const handleRegister = (props: OnSubmitProps) => {
-    console.log(props);
+    setStatus("loading");
+    register(props)
+      .then(() => {
+        setStatus(`idle`);
+        return alert("Account Created");
+      })
+      .catch((error) => {
+        setStatus("error");
+        toast.error(error);
+      });
+  };
+
+  const handleCloseModal = () => {
+    setStatus("idle");
+    setIsOpen("none");
   };
   return (
     <main className="h-screen flex flex-col items-center justify-center gap-4">
       <Logo width="80" height="80" />
       <h1 className="font-bold text-4xl">Bookshelf</h1>
+
       <div className="flex  gap-4">
         <Button onClick={() => setIsOpen("login")}>Login</Button>
         <Button onClick={() => setIsOpen("register")} variant="secondary">
@@ -55,8 +80,9 @@ export function LoginPage() {
         <main className="h-full flex flex-col items-center gap-3">
           <header className="font-extrabold text-3xl mb-3">Register</header>
           <Button
-            onClick={() => setIsOpen("none")}
-            className="absolute top-3 right-6 px-[10px] py-[12px] bg-button-secondary"
+            onClick={handleCloseModal}
+            className="absolute top-3 right-6 px-[10px] py-[12px]"
+            variant="secondary"
           >
             <X color="black" weight="bold" />
           </Button>
@@ -74,14 +100,18 @@ export function LoginPage() {
         <main className="h-full flex flex-col items-center gap-3">
           <header className="font-extrabold text-3xl mb-3">Login</header>
           <Button
-            onClick={() => setIsOpen("none")}
+            onClick={handleCloseModal}
             className="absolute top-3 right-6 px-[10px] py-[12px]"
             variant="secondary"
           >
             <X color="black" weight="bold" />
           </Button>
 
-          <LoginForm onSubmit={handleLogin} />
+          <LoginForm
+            onSubmit={handleLogin}
+            isLoading={status === "loading"}
+            isError={status === "error"}
+          />
         </main>
       </Modal>
     </main>

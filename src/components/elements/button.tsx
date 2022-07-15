@@ -12,9 +12,12 @@ export const Button = (props: ButtonProps) => {
     <button
       {...rest}
       disabled={isLoading}
-      className={` rounded px-4 py-2 
+      className={`rounded px-4 py-2 
+        shadow-hover-focus-idle
+        hover:shadow-hover-on
+        focus-within:shadow-focus-on
+        transition-shadow
       [&_svg]:text-paragraph
-      hover-shadow
       ${
         variant === "secondary"
           ? "bg-button-secondary text-headline"
