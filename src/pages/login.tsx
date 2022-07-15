@@ -10,6 +10,7 @@ import { Styles } from "react-modal";
 import { login, register } from "services/auth";
 import toast from "react-hot-toast";
 import { useNavigate, useRoutes } from "react-router-dom";
+import { useAuthContext } from "store/auth-conext";
 
 const modalStyles: Styles = {
   overlay: {
@@ -31,6 +32,7 @@ type IsOpen = "none" | "register" | "login";
 type Status = "idle" | "loading" | "error" | "success";
 
 export function LoginPage() {
+  const { setUser, user } = useAuthContext();
   const push = useNavigate();
   const [isOpen, setIsOpen] = useState<IsOpen>("none");
   const [status, setStatus] = useState<Status>("idle");
@@ -41,8 +43,9 @@ export function LoginPage() {
     login(props)
       .then((user) => {
         setStatus("success");
+        setUser(user);
         setTimeout(() => {
-          push("/browse");
+          // push("/browse");
         }, 500);
       })
       .catch((error) => {
@@ -81,6 +84,7 @@ export function LoginPage() {
         </Button>
       </div>
 
+      <span>username: {user?.username}</span>
       <Modal
         style={modalStyles}
         isOpen={isOpen === "register"}
