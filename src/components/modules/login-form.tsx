@@ -1,5 +1,12 @@
 import { Button, Input } from "components/elements";
-import { Eye, EyeSlash, Spinner, User, UserSquare } from "phosphor-react";
+import {
+  CheckCircle,
+  Eye,
+  EyeSlash,
+  Spinner,
+  User,
+  UserSquare,
+} from "phosphor-react";
 import { FormEvent, useState } from "react";
 import { FormElements, OnSubmitProps } from "./types";
 
@@ -7,9 +14,15 @@ interface LoginFormProps {
   onSubmit: (props: OnSubmitProps) => void;
   isLoading: boolean;
   isError: boolean;
+  isSucess: boolean;
 }
 
-export const LoginForm = ({ onSubmit, isLoading, isError }: LoginFormProps) => {
+export const LoginForm = ({
+  onSubmit,
+  isLoading,
+  isError,
+  isSucess,
+}: LoginFormProps) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -54,6 +67,7 @@ export const LoginForm = ({ onSubmit, isLoading, isError }: LoginFormProps) => {
         type="submit"
         className="self-stretch mt-3 flex justify-center"
         isLoading={isLoading}
+        variant={isSucess ? "highlight" : "primary"}
       >
         {isLoading ? (
           <Spinner
@@ -62,6 +76,8 @@ export const LoginForm = ({ onSubmit, isLoading, isError }: LoginFormProps) => {
             aria-label="loading"
             className="spinner-animation"
           />
+        ) : isSucess ? (
+          <CheckCircle size={20} weight="bold" aria-label="Success" />
         ) : (
           "Submit"
         )}

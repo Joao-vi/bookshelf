@@ -9,6 +9,7 @@ import Modal from "react-modal";
 import { Styles } from "react-modal";
 import { login, register } from "services/auth";
 import toast from "react-hot-toast";
+import { useNavigate, useRoutes } from "react-router-dom";
 
 const modalStyles: Styles = {
   overlay: {
@@ -27,19 +28,27 @@ const modalStyles: Styles = {
 };
 
 type IsOpen = "none" | "register" | "login";
-type Status = "idle" | "loading" | "error";
+type Status = "idle" | "loading" | "error" | "success";
 
 export function LoginPage() {
+  const push = useNavigate();
   const [isOpen, setIsOpen] = useState<IsOpen>("none");
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState("");
 
-  const handleLogin = async (props: OnSubmitProps) => {
+  const handleLogin = (props: OnSubmitProps) => {
     setStatus("loading");
-    const user = await login(props).catch((error) => {
-      setStatus("error");
-      toast.error(error);
-    });
+    login(props)
+      .then((user) => {
+        setStatus("success");
+        setTimeout(() => {
+          push("/browse");
+        }, 500);
+      })
+      .catch((error) => {
+        setStatus("error");
+        toast.error(error);
+      });
   };
 
   const handleRegister = (props: OnSubmitProps) => {
@@ -47,7 +56,8 @@ export function LoginPage() {
     register(props)
       .then(() => {
         setStatus(`idle`);
-        return alert("Account Created");
+        toast.success("Account created.");
+        setIsOpen("none");
       })
       .catch((error) => {
         setStatus("error");
@@ -115,6 +125,7 @@ export function LoginPage() {
             onSubmit={handleLogin}
             isLoading={status === "loading"}
             isError={status === "error"}
+            isSucess={status === "success"}
           />
         </main>
       </Modal>

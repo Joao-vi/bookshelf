@@ -34,6 +34,16 @@
     }
   }
 
+  .show-animation {
+    @apply opacity-50 scale-50;
+    animation: show 250 cubic-bezier(0.46, 0.69, 0.77, 0.51) forwards;
+  }
+
+  @keyframes show {
+    100% {
+      @apply opacity-100 scale-100;
+    }
+  }
   .overflow-text {
     @apply after:content-[''] after:absolute after:bottom-0 after:right-0 after:h-[24px] after:w-[50%] after:bg-[linear-gradient(90deg,transparent,#eaddcf)];
   }

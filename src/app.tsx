@@ -9,7 +9,7 @@ function App() {
         <Route path="/" element={<LoginPage />} />
         <Route path="/browse" element={<BrowsePage />} />
       </Routes>
-      <Toaster />
+      <Toaster toastOptions={{ duration: 3000 }} />
     </Router>
   );
 }

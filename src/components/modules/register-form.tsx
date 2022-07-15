@@ -28,12 +28,14 @@ export const RegisterForm = ({
         type="text"
         autoFocus
         isError={isError}
+        required
       />
       <Input
         label="Password"
         id="password"
         type="password"
         autoComplete="current-password"
+        required
       />
       <Button
         type="submit"
