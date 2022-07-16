@@ -1,7 +1,9 @@
 import { Input } from "components/elements";
+import { Layout } from "components/layouts/layout";
 
 import { Book } from "components/modules";
-import { FormEvent, useEffect, useState } from "react";
+import { CircleNotch, MagnifyingGlass, X } from "phosphor-react";
+import { createRef, FormEvent, useEffect, useRef, useState } from "react";
 import { Books, client, ResponseAPI } from "services/api";
 
 type Status = "idle" | "loading" | "success" | "error";
@@ -24,6 +26,21 @@ const BrowsePage = () => {
   const [error, setError] = useState<any>();
   const [query, setQuery] = useState("");
   const [status, setStatus] = useState<Status>("idle");
+  const isFirstRender = useRef(true);
+
+  const fetchBooks = async (query: string) => {
+    try {
+      setStatus("loading");
+      const data = await client<ResponseAPI>(
+        `volumes?q=${encodeURIComponent(query)}`
+      );
+      setData({ ...data, items: handleFormatData(data.items) });
+      setStatus("success");
+    } catch (error) {
+      setError(error);
+      setStatus("error");
+    }
+  };
 
   const handleSearch = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -32,48 +49,61 @@ const BrowsePage = () => {
 
     setQuery(search.value);
 
-    setStatus("loading");
-    client<ResponseAPI>(`volumes?q=${encodeURIComponent(search.value)}`).then(
-      (data) => {
-        setData({ ...data, items: handleFormatData(data.items) });
-        setStatus("success");
-      },
-      (error) => {
-        setStatus("error");
-        setError(error);
-      }
-    );
+    fetchBooks(search.value);
   };
 
+  useEffect(() => {
+    if (isFirstRender.current) {
+      fetchBooks("");
+    }
+    return () => {
+      isFirstRender.current = false;
+    };
+  }, [fetchBooks]);
+
   return (
-    <div className="flex flex-col gap-4 justify-center items-center min-h-screen px-4">
-      <form onSubmit={handleSearch}>
-        <Input
-          id="search"
-          placeholder="Search for a book"
-          hasIcon
-          isError={status === "error"}
-          isLoading={status === "loading"}
-        />
-      </form>
+    <Layout>
+      <div className="mx-auto max-w-[1400px] flex flex-col gap-8 justify-start items-center px-4">
+        <form onSubmit={handleSearch}>
+          <Input
+            id="search"
+            placeholder="Search for a book"
+            isError={status === "error"}
+            isLoading={status === "loading"}
+          >
+            {status === "idle" || status === "success" ? (
+              <MagnifyingGlass size={20} weight="bold" />
+            ) : status === "loading" ? (
+              <CircleNotch
+                size={20}
+                weight="bold"
+                className="spinner-animation"
+              />
+            ) : (
+              <X size={20} weight="bold" />
+            )}
+          </Input>
+        </form>
 
-      {status === "error" ? (
-        <div className="text-[#d00000] font-medium">
-          <span>There was an error</span>
-          <p>{error}</p>
-        </div>
-      ) : null}
-
-      <section className="flex flex-wrap gap-3 items-center justify-items-stretch">
-        {status === "success" ? (
-          data?.items.length ? (
-            data.items.map((item, index) => <Book {...item} />)
-          ) : (
-            <p>No books found. Try another search.</p>
-          )
+        {status === "error" ? (
+          <div className="text-red-500 font-medium text-center">
+            <span>There was an error</span>
+            <p className="font-normal">{error.message}</p>
+            <p className="font-normal">{error.stack}</p>
+          </div>
         ) : null}
-      </section>
-    </div>
+
+        <section className="flex flex-wrap gap-3 items-center justify-items-stretch">
+          {status === "success" ? (
+            data?.items.length ? (
+              data.items.map((item, index) => <Book key={index} {...item} />)
+            ) : (
+              <p>No books found. Try another search.</p>
+            )
+          ) : null}
+        </section>
+      </div>
+    </Layout>
   );
 };
 

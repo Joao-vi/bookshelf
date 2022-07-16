@@ -32,7 +32,7 @@ type IsOpen = "none" | "register" | "login";
 type Status = "idle" | "loading" | "error" | "success";
 
 export function LoginPage() {
-  const { setUser, user } = useAuthContext();
+  const { setUser } = useAuthContext();
   const push = useNavigate();
   const [isOpen, setIsOpen] = useState<IsOpen>("none");
   const [status, setStatus] = useState<Status>("idle");
@@ -45,7 +45,7 @@ export function LoginPage() {
         setStatus("success");
         setUser(user);
         setTimeout(() => {
-          // push("/browse");
+          push("/browse");
         }, 500);
       })
       .catch((error) => {
@@ -84,7 +84,6 @@ export function LoginPage() {
         </Button>
       </div>
 
-      <span>username: {user?.username}</span>
       <Modal
         style={modalStyles}
         isOpen={isOpen === "register"}

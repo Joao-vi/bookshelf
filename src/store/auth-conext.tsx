@@ -7,7 +7,7 @@ import {
   useMemo,
   useState,
 } from "react";
-import { autoLogin, login, UserData } from "services/auth";
+import { autoLogin, UserData } from "services/auth";
 
 type AuthContextProps = {
   user?: UserData;
@@ -19,11 +19,10 @@ const AuthContext = createContext<AuthContextProps>(null!);
 AuthContext.displayName = "User Context";
 
 const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<UserData>();
-  const [isLoading, setIsLoading] = useState(false);
+  const [user, setUser] = useState<UserData | undefined>();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    setIsLoading(true);
     autoLogin()
       .then((user) => {
         return setUser(user);

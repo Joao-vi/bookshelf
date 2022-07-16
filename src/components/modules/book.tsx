@@ -26,7 +26,7 @@ const Book = (props: Books["volumeInfo"]) => {
 
         <main>
           <span className="text-headline">Description</span>
-          <p className="font-normal h-[calc(3*24px)] truncate  whitespace-normal relative overflow-text">
+          <p className="font-normal h-[calc(3*1.5rem)] truncate  whitespace-normal relative overflow-text">
             {props?.description
               ? props.description
               : "No description available."}

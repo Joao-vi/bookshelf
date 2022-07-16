@@ -40,7 +40,8 @@ module.exports = {
           "inset 0px 0px 0px 2px rgb(0 0 0 / 30%), 0px 0px 0px 3px rgb(0 0 0 / 18%)!important",
       },
       transitionProperty: {
-        "hover-focus": "box-shadow 200ms ease-in-out",
+        "hover-focus":
+          "box-shadow 200ms cubic-bezier(0.175, 0.885, 0.32, 1.275)",
       },
     },
   },

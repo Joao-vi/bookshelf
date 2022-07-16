@@ -18,6 +18,12 @@
   button {
     @apply text-text-button font-medium;
   }
+
+  @media (max-width: 1400px) {
+    html {
+      font-size: 90%;
+    }
+  }
 }
 
 @layer utilities {
