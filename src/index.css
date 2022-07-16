@@ -31,6 +31,10 @@
     animation: spin 1s linear infinite;
   }
 
+  .icon-link-animation {
+    @apply text-headline animate-go-left;
+  }
+
   @keyframes spin {
     0% {
       transform: rotate(0deg);

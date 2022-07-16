@@ -21,6 +21,7 @@ module.exports = {
       },
       animation: {
         "shake-x": "shake-x 200ms ease-in-out",
+        "go-left": "go-left 1s cubic-bezier(0.18, 0.89, 0.3, 1.4) infinite",
       },
       keyframes: {
         "shake-x": {
@@ -29,6 +30,10 @@ module.exports = {
           "50%": { transform: "translateX(-5px)" },
           "75%": { transform: "translateX(5px)" },
           "100%": { transform: "translateX(0)" },
+        },
+        "go-left": {
+          from: { transform: "translateX(0px)", opacity: 0.8 },
+          to: { transform: "translateX(5px)", opacity: 1 },
         },
       },
       boxShadow: {
