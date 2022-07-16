@@ -4,7 +4,8 @@ import { Layout } from "components/layouts/layout";
 import { Book } from "components/modules";
 import { CircleNotch, MagnifyingGlass, X } from "phosphor-react";
 import { createRef, FormEvent, useEffect, useRef, useState } from "react";
-import { Books, client, ResponseAPI } from "services/api";
+import { client } from "services/api";
+import { BookData } from "types";
 
 type Status = "idle" | "loading" | "success" | "error";
 
@@ -12,17 +13,8 @@ type SearchFormElements = {
   search: HTMLInputElement;
 } & HTMLFormControlsCollection;
 
-type DataBooks = {
-  kind: string;
-  totalItems: number;
-  items: Books["volumeInfo"][];
-};
-
-const handleFormatData = (data: ResponseAPI["items"]) =>
-  data.map(({ volumeInfo }) => ({ ...volumeInfo }));
-
 const BrowsePage = () => {
-  const [data, setData] = useState<DataBooks>();
+  const [data, setData] = useState<BookData>();
   const [error, setError] = useState<any>();
   const [query, setQuery] = useState("");
   const [status, setStatus] = useState<Status>("idle");
@@ -31,10 +23,10 @@ const BrowsePage = () => {
   const fetchBooks = async (query: string) => {
     try {
       setStatus("loading");
-      const data = await client<ResponseAPI>(
+      const data = await client<BookData>(
         `volumes?q=${encodeURIComponent(query)}`
       );
-      setData({ ...data, items: handleFormatData(data.items) });
+      setData(data);
       setStatus("success");
     } catch (error) {
       setError(error);
@@ -96,7 +88,9 @@ const BrowsePage = () => {
         <section className="flex flex-wrap gap-3 items-center justify-items-stretch">
           {status === "success" ? (
             data?.items.length ? (
-              data.items.map((item, index) => <Book key={index} {...item} />)
+              data.items.map((item) => (
+                <Book key={item.id} {...item.volumeInfo} id={item.id} />
+              ))
             ) : (
               <p>No books found. Try another search.</p>
             )

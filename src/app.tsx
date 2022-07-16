@@ -10,6 +10,7 @@ import {
 import { AuthProvider, useAuthContext } from "store/auth-conext";
 
 import { Layout } from "components/layouts/layout";
+import { BookPage } from "pages/book";
 
 const PathGuard = ({ children }: { children: JSX.Element }) => {
   const location = useLocation();
@@ -37,6 +38,7 @@ function App() {
               </PathGuard>
             }
           />
+          <Route path="/book/:id" element={<BookPage />} />
         </Routes>
         <Toaster toastOptions={{ duration: 3000 }} />
       </Router>

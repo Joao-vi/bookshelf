@@ -1,10 +1,11 @@
 import { Button } from "components/elements";
-import { ArrowRight, ArrowUpRight } from "phosphor-react";
-import { Books } from "services/api";
+import { ArrowRight, ArrowUpRight, SpeakerNone } from "phosphor-react";
+import { VolumeInfo } from "types";
 
-const Book = (props: Books["volumeInfo"]) => {
+const Book = (props: VolumeInfo & { id: string }) => {
   return (
     <a
+      href={`/book/${props.id}`}
       className="flex-1 self-stretch basis-[500px] flex items-center p-3 py-4 
     gap-2 border-[2px] border-card-border rounded bg-card text-card-p group
     hover:-translate-y-2 transition ease-[cubic-bezier(0.03, 0.84, 0.68, 1.42)]
@@ -22,13 +23,15 @@ const Book = (props: Books["volumeInfo"]) => {
           <div className="flex justify-between">
             <h1 className="font-bold text-xl">{props.title}</h1>
             <div className="font-semibold text-highlight">
-              <span>{props.language}</span> / <span>{props.publishedDate}</span>
+              <span>{props.language.toUpperCase()}</span> /{" "}
+              <span>{props.publishedDate}</span>
             </div>
           </div>
 
           <div className="flex flex-wrap gap-1 font-medium">
-            <span>{props.publisher}</span>•<span>Book</span>•
-            <span> {props.pageCount} pages </span>
+            {!!props.publisher && <span>{props.publisher}</span>}
+            {!!props.printType && <span>•{props.printType}</span>}
+            {!!props.pageCount && <span>•{props.pageCount} pages </span>}
           </div>
         </header>
 
@@ -42,7 +45,7 @@ const Book = (props: Books["volumeInfo"]) => {
         </main>
 
         <a
-          href="#"
+          href={`/book/${props.id}`}
           className="opacity-0 scale-0 group-hover:opacity-100 group-hover:scale-100 transition ease-[cubic-bezier(0.03, 0.84, 0.68, 1.42)]  self-end"
         >
           <Button variant="highlight" className="flex items-center gap-1">

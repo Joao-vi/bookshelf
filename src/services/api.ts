@@ -1,29 +1,3 @@
-export interface Books {
-  volumeInfo: {
-    title: string;
-    subtitle: string;
-    authors: string[];
-    publisher: string;
-    publishedDate: string;
-    description?: string;
-    imageLinks: ImageLinks;
-    language: string;
-    categories: string[];
-    pageCount: number;
-  };
-}
-
-type ImageLinks = {
-  smallThumbnail: string;
-  thumbnail: string;
-};
-
-export interface ResponseAPI {
-  kind: string;
-  totalItems: number;
-  items: Books[];
-}
-
 export const client = <T>(
   endpoint: string,
   customConfig?: RequestInit
