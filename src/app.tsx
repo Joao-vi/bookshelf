@@ -11,6 +11,7 @@ import { AuthProvider, useAuthContext } from "store/auth-conext";
 
 import { Layout } from "components/layouts/layout";
 import { BookPage } from "pages/book";
+import { NotFound } from "pages/404";
 
 const PathGuard = ({ children }: { children: JSX.Element }) => {
   const location = useLocation();
@@ -38,7 +39,15 @@ function App() {
               </PathGuard>
             }
           />
-          <Route path="/book/:id" element={<BookPage />} />
+          <Route
+            path="/book/:id"
+            element={
+              <PathGuard>
+                <BookPage />
+              </PathGuard>
+            }
+          />
+          <Route path="*" element={<NotFound />} />
         </Routes>
         <Toaster toastOptions={{ duration: 3000 }} />
       </Router>
