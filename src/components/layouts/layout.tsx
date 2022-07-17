@@ -1,7 +1,7 @@
 import { Button } from "components/elements";
 import { ArrowRight, SignOut, User } from "phosphor-react";
 import { ReactNode } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useAuthContext } from "store/auth-conext";
 
 type LayoutProps = {
@@ -29,29 +29,33 @@ export const Layout = ({ children }: LayoutProps) => {
     <div className="min-h-screen flex flex-col gap-5 px-5 pt-5">
       <header className="w-full flex justify-end items-center gap-2">
         <nav className="mr-auto text-lg flex items-center gap-2">
-          <a
-            href="/browse"
+          <NavLink
+            to="/browse"
             className={
               pathname.includes("/browse") ? selectedStyle : unselectedStyle
             }
           >
             Browse
-          </a>
-          <ArrowRight weight="bold" />
-          <a
-            href="/book"
-            className={
-              pathname.includes("/book") ? selectedStyle : unselectedStyle
-            }
-          >
-            Browse
-          </a>
+          </NavLink>
+          {pathname.includes("/book") && (
+            <>
+              <ArrowRight weight="bold" />
+              <NavLink
+                to="/book"
+                className={
+                  pathname.includes("/book") ? selectedStyle : unselectedStyle
+                }
+              >
+                Browse
+              </NavLink>
+            </>
+          )}
         </nav>
 
         {!!user && (
           <span className="self-stretch bg-card rounded px-2 flex items-center gap-1">
             <User size={18} weight="bold" />
-            João
+            {user.username}
           </span>
         )}
         <Button
