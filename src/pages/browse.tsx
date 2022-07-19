@@ -6,8 +6,6 @@ import { CircleNotch, MagnifyingGlass, X } from "phosphor-react";
 import { FormEvent, useState } from "react";
 import { useFetchBook } from "services/use-fetch-book";
 
-type Status = "idle" | "loading" | "success" | "error";
-
 type SearchFormElements = {
   search: HTMLInputElement;
 } & HTMLFormControlsCollection;

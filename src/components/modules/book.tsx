@@ -3,7 +3,7 @@ import { ArrowRight } from "phosphor-react";
 import { NavLink } from "react-router-dom";
 import { VolumeInfo } from "types";
 
-import noCoverBook from "../../../public/assets/no-cover-book.png";
+import noCoverBook from "../../../assets/no-cover-book.png";
 
 const Book = (props: VolumeInfo & { id: string }) => {
   return (

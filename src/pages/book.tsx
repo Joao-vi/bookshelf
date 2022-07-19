@@ -1,7 +1,7 @@
 import { Layout, LoadingScreen } from "components/layouts";
 import { useParams } from "react-router-dom";
 import { useFetchBook } from "services/use-fetch-book";
-import noCoverBook from "../../public/assets/no-cover-book.png";
+import noCoverBook from "../../assets/no-cover-book.png";
 
 export const BookPage = () => {
   const { id } = useParams();
