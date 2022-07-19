@@ -14,7 +14,6 @@ export const Layout = ({ children }: LayoutProps) => {
   const { pathname } = useLocation();
   const push = useNavigate();
 
-  console.log(location);
   const handleLogout = () => {
     window.localStorage.removeItem("session");
     push("/");

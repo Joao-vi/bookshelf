@@ -3,9 +3,8 @@ import { Layout } from "components/layouts/layout";
 
 import { Book } from "components/modules";
 import { CircleNotch, MagnifyingGlass, X } from "phosphor-react";
-import { createRef, FormEvent, useEffect, useRef, useState } from "react";
-import { client } from "services/api";
-import { BookData } from "types";
+import { FormEvent, useState } from "react";
+import { useFetchBook } from "services/use-fetch-book";
 
 type Status = "idle" | "loading" | "success" | "error";
 
@@ -14,25 +13,9 @@ type SearchFormElements = {
 } & HTMLFormControlsCollection;
 
 const BrowsePage = () => {
-  const [data, setData] = useState<BookData>();
-  const [error, setError] = useState<any>();
   const [query, setQuery] = useState("");
-  const [status, setStatus] = useState<Status>("idle");
-  const isFirstRender = useRef(true);
-
-  const fetchBooks = async (query: string) => {
-    try {
-      setStatus("loading");
-      const data = await client<BookData>(
-        `volumes?q=${encodeURIComponent(query)}`
-      );
-      setData(data);
-      setStatus("success");
-    } catch (error) {
-      setError(error);
-      setStatus("error");
-    }
-  };
+  const { data, isError, isLoading, isIdle, isSuccess, error } =
+    useFetchBook(query);
 
   const handleSearch = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -40,18 +23,7 @@ const BrowsePage = () => {
     const { search } = e.currentTarget.elements as SearchFormElements;
 
     setQuery(search.value);
-
-    fetchBooks(search.value);
   };
-
-  useEffect(() => {
-    if (isFirstRender.current) {
-      fetchBooks("");
-    }
-    return () => {
-      isFirstRender.current = false;
-    };
-  }, [fetchBooks]);
 
   return (
     <Layout>
@@ -60,12 +32,12 @@ const BrowsePage = () => {
           <Input
             id="search"
             placeholder="Search for a book"
-            isError={status === "error"}
-            isLoading={status === "loading"}
+            isError={isError}
+            isLoading={isLoading}
           >
-            {status === "idle" || status === "success" ? (
+            {isIdle || isSuccess ? (
               <MagnifyingGlass size={20} weight="bold" />
-            ) : status === "loading" ? (
+            ) : isLoading ? (
               <CircleNotch
                 size={20}
                 weight="bold"
@@ -77,7 +49,7 @@ const BrowsePage = () => {
           </Input>
         </form>
 
-        {status === "error" ? (
+        {isError ? (
           <div className="text-red-500 font-medium text-center">
             <span>There was an error</span>
             <p className="font-normal">{error.message}</p>
@@ -86,7 +58,7 @@ const BrowsePage = () => {
         ) : null}
 
         <section className="flex flex-wrap gap-3 items-center justify-items-stretch">
-          {status === "success" ? (
+          {isSuccess && !isLoading ? (
             data?.items.length ? (
               data.items.map((item) => (
                 <Book key={item.id} {...item.volumeInfo} id={item.id} />

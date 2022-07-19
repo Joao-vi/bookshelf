@@ -1,11 +1,14 @@
 import { Button } from "components/elements";
-import { ArrowRight, ArrowUpRight, SpeakerNone } from "phosphor-react";
+import { ArrowRight } from "phosphor-react";
+import { NavLink } from "react-router-dom";
 import { VolumeInfo } from "types";
+
+import noCoverBook from "../../../public/assets/no-cover-book.png";
 
 const Book = (props: VolumeInfo & { id: string }) => {
   return (
-    <a
-      href={`/book/${props.id}`}
+    <NavLink
+      to={`/book/${props.id}`}
       className="flex-1 self-stretch basis-[500px] flex items-center p-3 py-4 
     gap-2 border-[2px] border-card-border rounded bg-card text-card-p group
     hover:-translate-y-2 transition ease-[cubic-bezier(0.03, 0.84, 0.68, 1.42)]
@@ -14,7 +17,7 @@ const Book = (props: VolumeInfo & { id: string }) => {
     >
       <img
         className="object-contain rounded"
-        src={props.imageLinks?.thumbnail}
+        src={props.imageLinks?.thumbnail || noCoverBook}
         alt={props.title}
       />
 
@@ -44,8 +47,8 @@ const Book = (props: VolumeInfo & { id: string }) => {
           </p>
         </main>
 
-        <a
-          href={`/book/${props.id}`}
+        <NavLink
+          to={`/book/${props.id}`}
           className="opacity-0 scale-0 group-hover:opacity-100 group-hover:scale-100 transition ease-[cubic-bezier(0.03, 0.84, 0.68, 1.42)]  self-end"
         >
           <Button variant="highlight" className="flex items-center gap-1">
@@ -56,9 +59,9 @@ const Book = (props: VolumeInfo & { id: string }) => {
               className="icon-link-animation"
             />
           </Button>
-        </a>
+        </NavLink>
       </div>
-    </a>
+    </NavLink>
   );
 };
 
