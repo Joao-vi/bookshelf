@@ -1,6 +1,11 @@
+import { motion } from "framer-motion";
+
 const Logo = ({ width = "48", height = "48" }) => {
   return (
-    <svg
+    <motion.svg
+      initial={{ scale: 0 }}
+      animate={{ scale: 1 }}
+      transition={{ type: "spring", bounce: 0.4 }}
       width={`${width}px`}
       height={`${height}px`}
       viewBox={`0 0 48 48`}
@@ -45,7 +50,7 @@ const Logo = ({ width = "48", height = "48" }) => {
           fill="#FFFFFF"
         />
       </g>
-    </svg>
+    </motion.svg>
   );
 };
 

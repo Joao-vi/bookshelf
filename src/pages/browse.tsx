@@ -2,6 +2,7 @@ import { Input } from "components/elements";
 import { Layout } from "components/layouts/layout";
 
 import { Book } from "components/modules";
+import { AnimatePresence, motion } from "framer-motion";
 import { CircleNotch, MagnifyingGlass, X } from "phosphor-react";
 import { FormEvent, useState } from "react";
 import { useFetchBook } from "services/use-fetch-book";
@@ -9,6 +10,15 @@ import { useFetchBook } from "services/use-fetch-book";
 type SearchFormElements = {
   search: HTMLInputElement;
 } & HTMLFormControlsCollection;
+
+const parentVariant = {
+  visible: {
+    transition: {
+      delayChildren: 0.4,
+      staggerChildren: 0.1,
+    },
+  },
+};
 
 const BrowsePage = () => {
   const [query, setQuery] = useState("");
@@ -55,8 +65,13 @@ const BrowsePage = () => {
           </div>
         ) : null}
 
-        <section className="flex flex-wrap gap-3 items-center justify-items-stretch">
-          {isSuccess && !isLoading ? (
+        <motion.ul
+          initial="hidden"
+          animate="visible"
+          variants={parentVariant}
+          className="flex flex-wrap gap-3 items-center justify-items-stretch"
+        >
+          {isSuccess ? (
             data?.items.length ? (
               data.items.map((item) => (
                 <Book key={item.id} {...item.volumeInfo} id={item.id} />
@@ -65,7 +80,7 @@ const BrowsePage = () => {
               <p>No books found. Try another search.</p>
             )
           ) : null}
-        </section>
+        </motion.ul>
       </div>
     </Layout>
   );

@@ -11,10 +11,11 @@ import { AuthProvider, useAuthContext } from "store/auth-conext";
 
 import { BookPage } from "pages/book";
 import { NotFound } from "pages/404";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClientProvider } from "react-query";
 
 import { ReactQueryDevtools } from "react-query/devtools";
 import { rqClient } from "lib/react-query";
+import { AnimatePresence } from "framer-motion";
 
 const PathGuard = ({ children }: { children: JSX.Element }) => {
   const location = useLocation();
@@ -33,29 +34,31 @@ function App() {
     <QueryClientProvider client={rqClient}>
       <ReactQueryDevtools />
       <AuthProvider>
-        <Router>
-          <Routes>
-            <Route path="/" element={<LoginPage />} />
-            <Route
-              path="/browse"
-              element={
-                <PathGuard>
-                  <BrowsePage />
-                </PathGuard>
-              }
-            />
-            <Route
-              path="/book/:id"
-              element={
-                <PathGuard>
-                  <BookPage />
-                </PathGuard>
-              }
-            />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-          <Toaster toastOptions={{ duration: 3000 }} />
-        </Router>
+        <AnimatePresence exitBeforeEnter>
+          <Router>
+            <Routes>
+              <Route path="/" element={<LoginPage />} />
+              <Route
+                path="/browse"
+                element={
+                  <PathGuard>
+                    <BrowsePage />
+                  </PathGuard>
+                }
+              />
+              <Route
+                path="/book/:id"
+                element={
+                  <PathGuard>
+                    <BookPage />
+                  </PathGuard>
+                }
+              />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+            <Toaster toastOptions={{ duration: 3000 }} />
+          </Router>
+        </AnimatePresence>
       </AuthProvider>
     </QueryClientProvider>
   );

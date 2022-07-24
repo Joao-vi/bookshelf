@@ -1,4 +1,5 @@
 import { Button } from "components/elements";
+import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, SignOut, User } from "phosphor-react";
 import { ReactNode } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
@@ -25,7 +26,13 @@ export const Layout = ({ children }: LayoutProps) => {
 
   const selectedStyle = `bg-highlight px-3 py-1 rounded-lg text-gray-100 `;
   return (
-    <div className="min-h-screen flex flex-col gap-5 px-5 pt-5">
+    <motion.div
+      initial={{ y: 20, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      exit={{ y: 20, opacity: 0 }}
+      className="min-h-screen flex flex-col gap-5 px-5 pt-5"
+      key={pathname}
+    >
       <header className="w-full flex justify-end items-center gap-2">
         <nav className="mr-auto text-lg flex items-center gap-2">
           <NavLink
@@ -45,7 +52,7 @@ export const Layout = ({ children }: LayoutProps) => {
                   pathname.includes("/book") ? selectedStyle : unselectedStyle
                 }
               >
-                Browse
+                Book
               </NavLink>
             </>
           )}
@@ -65,10 +72,10 @@ export const Layout = ({ children }: LayoutProps) => {
           Logout <SignOut size={18} weight="bold" />
         </Button>
       </header>
-      {children}
+      <AnimatePresence>{children}</AnimatePresence>
       <footer className="mt-auto border-t p-3 text-center font-medium text-slate-400">
         <span>Bookshelf</span>
       </footer>
-    </div>
+    </motion.div>
   );
 };

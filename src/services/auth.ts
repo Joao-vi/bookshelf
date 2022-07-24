@@ -1,11 +1,21 @@
+import { BookProps } from "components/modules";
+
 export type Props = {
   username: string;
   password: string;
 };
 
+export type Note = {
+  bookId: string;
+  notes: string;
+};
+
 export type UserData = {
   username: string;
+  favoriteBooks: BookProps[];
+  notes: Note[];
 };
+
 export type User = {
   password: string;
   token: string | undefined;
@@ -65,7 +75,10 @@ export const register = ({ username, password }: Props) =>
         return rejected("Username provided was already taken.");
       }
 
-      const newUsers = [...users, { password, data: { username } }];
+      const newUsers = [
+        ...users,
+        { password, data: { username, favoriteBooks: [], notes: [] } },
+      ];
       window.localStorage.setItem("users", JSON.stringify(newUsers));
       resolve("Done");
     }, 500);
@@ -88,4 +101,48 @@ export const autoLogin = () =>
 
       return reject("Your session has expired. Please relogin.");
     }, 500);
+  });
+
+export const updateNotes = (username: string, newNotes: Note) =>
+  new Promise((resolve, reject) => {
+    setTimeout(() => {
+      const users = JSON.parse(localStorage.getItem("users") || "[]") as User[];
+      const userDb = users.find((user) => user.data.username === username);
+
+      if (users.length <= 0 || !userDb)
+        return reject("User not found on Database");
+
+      const hasBookId = !!userDb.data.notes.some(
+        (note) => note.bookId === newNotes.bookId
+      );
+      let newState: Note[];
+
+      if (hasBookId) {
+        newState = userDb.data.notes.map((note) => {
+          if (note.bookId === newNotes.bookId) {
+            return {
+              ...note,
+              notes: newNotes.notes,
+            };
+          }
+          return note;
+        });
+      } else {
+        newState = [
+          ...userDb.data.notes,
+          { bookId: newNotes.bookId, notes: newNotes.notes },
+        ];
+      }
+
+      const newUsers = users.map((user) => {
+        if (user.data.username === username) {
+          return { ...user, data: { ...user.data, notes: newState } };
+        }
+
+        return user;
+      });
+
+      window.localStorage.setItem("users", JSON.stringify(newUsers));
+      resolve("done");
+    }, 250);
   });

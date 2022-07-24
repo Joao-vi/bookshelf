@@ -12,6 +12,8 @@ import toast from "react-hot-toast";
 import { useNavigate, useRoutes } from "react-router-dom";
 import { useAuthContext } from "store/auth-conext";
 
+import { AnimatePresence, motion } from "framer-motion";
+
 const modalStyles: Styles = {
   overlay: {
     background: "rgba(17, 21, 24, 0.45)",
@@ -30,6 +32,28 @@ const modalStyles: Styles = {
 
 type IsOpen = "none" | "register" | "login";
 type Status = "idle" | "loading" | "error" | "success";
+
+const parentVariant = {
+  visible: {
+    transition: {
+      delayChildren: 0.3,
+      staggerChildren: 0.2,
+    },
+  },
+};
+
+const childrenVariant = {
+  hidden: {
+    opacity: 0,
+    y: 20,
+    scale: 0.8,
+  },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    y: 0,
+  },
+};
 
 export function LoginPage() {
   const { setUser } = useAuthContext();
@@ -72,41 +96,51 @@ export function LoginPage() {
     setStatus("idle");
     setIsOpen("none");
   };
-  return (
-    <main className="h-screen flex flex-col items-center justify-center gap-4">
-      <Logo width="80" height="80" />
-      <h1 className="font-bold text-4xl">Bookshelf</h1>
 
-      <div className="flex  gap-4">
+  return (
+    <motion.main
+      initial="hidden"
+      animate="visible"
+      variants={parentVariant}
+      className="h-screen flex flex-col items-center justify-center gap-4"
+    >
+      <Logo width="80" height="80" />
+      <motion.h1 variants={childrenVariant} className="font-bold text-4xl">
+        Bookshelf
+      </motion.h1>
+
+      <motion.div variants={childrenVariant} className="flex  gap-4">
         <Button onClick={() => setIsOpen("login")}>Login</Button>
         <Button onClick={() => setIsOpen("register")} variant="secondary">
           Register
         </Button>
-      </div>
+      </motion.div>
 
-      <Modal
-        style={modalStyles}
-        isOpen={isOpen === "register"}
-        ariaHideApp={isOpen !== "register"}
-        contentLabel="Registration form"
-      >
-        <main className="h-full flex flex-col items-center gap-3">
-          <header className="font-extrabold text-3xl mb-3">Register</header>
-          <Button
-            onClick={handleCloseModal}
-            className="absolute top-3 right-6 px-[10px] py-[12px]"
-            variant="secondary"
-          >
-            <X color="black" weight="bold" />
-          </Button>
+      {isOpen === "register" && (
+        <Modal
+          style={modalStyles}
+          isOpen={isOpen === "register"}
+          ariaHideApp={isOpen !== "register"}
+          contentLabel="Registration form"
+        >
+          <main className="h-full flex flex-col items-center gap-3">
+            <header className="font-extrabold text-3xl mb-3">Register</header>
+            <Button
+              onClick={handleCloseModal}
+              className="absolute top-3 right-6 px-[10px] py-[12px]"
+              variant="secondary"
+            >
+              <X color="black" weight="bold" />
+            </Button>
 
-          <RegisterForm
-            onSubmit={handleRegister}
-            isLoading={status === "loading"}
-            isError={status === "error"}
-          />
-        </main>
-      </Modal>
+            <RegisterForm
+              onSubmit={handleRegister}
+              isLoading={status === "loading"}
+              isError={status === "error"}
+            />
+          </main>
+        </Modal>
+      )}
 
       <Modal
         style={modalStyles}
@@ -132,6 +166,6 @@ export function LoginPage() {
           />
         </main>
       </Modal>
-    </main>
+    </motion.main>
   );
 }
