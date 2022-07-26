@@ -1,6 +1,6 @@
 import { Button } from "components/elements";
 import { Layout, LoadingScreen } from "components/layouts";
-import { BookProps, FavoriteButton } from "components/modules";
+import { BookProps, FavoriteButton, StatusBook } from "components/modules";
 import { AnimatePresence, motion } from "framer-motion";
 import { KEYS, rqClient } from "lib/react-query";
 import { CircleNotch, PlusCircle, X, XCircle } from "phosphor-react";
@@ -80,18 +80,9 @@ export const BookPage = () => {
                 <h1 className="font-bold text-2xl">
                   {data?.items[0].volumeInfo.title}
                 </h1>
-                <FavoriteButton
-                  isLoading={favorites.isLoading || addFavorites.isLoading}
-                  isAdd={isAdd}
-                  onClick={() =>
-                    addFavorites.mutate({
-                      username: user?.username,
-                      book: {
-                        ...data.items[0].volumeInfo,
-                        id: data.items[0].id,
-                      },
-                    })
-                  }
+                <StatusBook
+                  book={{ ...data.items[0].volumeInfo, id }}
+                  username={user!.username}
                 />
               </header>
 
