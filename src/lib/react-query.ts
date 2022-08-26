@@ -9,4 +9,5 @@ export const rqClient = new QueryClient({
 
 export const KEYS = {
   FAV_BOOKS: "FAVORITES-BOOKS",
+  BOOKS: "BOOKS",
 };

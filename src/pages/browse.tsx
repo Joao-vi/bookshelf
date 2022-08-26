@@ -14,9 +14,9 @@ type SearchFormElements = {
 const parentVariant = {
   visible: {
     transition: {
-      delayChildren: 0.4,
-      staggerChildren: 0.1,
-    },
+      delayChildren: 0.3,
+      staggerChildren: 0.2
+    }
   },
 };
 
@@ -66,7 +66,6 @@ const BrowsePage = () => {
         ) : null}
 
         <motion.ul
-          initial="hidden"
           animate="visible"
           variants={parentVariant}
           className="flex flex-wrap gap-3 items-center justify-items-stretch"

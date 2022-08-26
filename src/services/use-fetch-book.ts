@@ -1,4 +1,4 @@
-import { Q_KEYS } from "constants";
+import { KEYS } from "lib/react-query";
 import { QueryFunctionContext, useQuery } from "react-query";
 import { BookData } from "types";
 import { booksAPI } from "./api";
@@ -16,6 +16,6 @@ const fetchBook = async ({ queryKey }: QueryFunctionContext) => {
 };
 
 export const useFetchBook = (query?: string) =>
-  useQuery<BookData, any>([Q_KEYS.BOOKS, query], fetchBook, {
+  useQuery<BookData, any>([KEYS.BOOKS, query], fetchBook, {
     enabled: query !== undefined,
   });

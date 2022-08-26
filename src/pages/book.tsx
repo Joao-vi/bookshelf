@@ -1,11 +1,9 @@
-import { Button } from "components/elements";
 import { Layout, LoadingScreen } from "components/layouts";
-import { BookProps, FavoriteButton, StatusBook } from "components/modules";
-import { AnimatePresence, motion } from "framer-motion";
+import { BookProps, StatusBook } from "components/modules";
 import { KEYS, rqClient } from "lib/react-query";
-import { CircleNotch, PlusCircle, X, XCircle } from "phosphor-react";
+import { CircleNotch } from "phosphor-react";
 import toast from "react-hot-toast";
-import { QueryClient, useMutation, useQueryClient } from "react-query";
+import { useMutation } from "react-query";
 import { useParams } from "react-router-dom";
 import { addFavorite, AddFavoritesProps } from "services/api";
 import { Note, updateNotes } from "services/auth";
@@ -20,44 +18,9 @@ export const BookPage = () => {
   const { user } = useAuthContext();
 
   const { data, isLoading, isError } = useFetchBook(id);
-  const favorites = useFetchFavorites();
-
-  const updateFavorites = (props: AddFavoritesProps) => addFavorite(props);
-
-  const addFavorites = useMutation(updateFavorites, {
-    onMutate: async ({ book }) => {
-      await rqClient.cancelQueries(KEYS.FAV_BOOKS);
-
-      const previousFavorites = rqClient.getQueryData(
-        KEYS.FAV_BOOKS
-      ) as BookProps[];
-
-      rqClient.setQueryData<BookProps[]>(KEYS.FAV_BOOKS, (favorites) => {
-        const isAdded = favorites?.some((fav) => fav.id === book.id);
-
-        if (!!isAdded) {
-          return favorites?.filter((fav) => fav.id !== book.id) || [];
-        }
-        return [...(favorites as any), book];
-      });
-
-      return { previousFavorites };
-    },
-    onError: (err, book, context) => {
-      toast.error(err as any);
-      rqClient.setQueryData(KEYS.FAV_BOOKS, context?.previousFavorites);
-    },
-    onSettled: () => {
-      rqClient.invalidateQueries(KEYS.FAV_BOOKS);
-    },
-  });
 
   const updateNote = useMutation((notes: Note) =>
     updateNotes(user!.username, notes)
-  );
-
-  const isAdd = !!favorites.data?.some(
-    (favorite) => favorite.id === data?.items[0].id
   );
 
   if (isLoading || !id) return <LoadingScreen />;

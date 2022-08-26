@@ -2,7 +2,7 @@ import { Button, Logo } from "components/elements";
 import { LoginForm, OnSubmitProps, RegisterForm } from "components/modules";
 import { useState } from "react";
 
-import { Spinner, X } from "phosphor-react";
+import { X } from "phosphor-react";
 
 import Modal from "react-modal";
 
@@ -12,7 +12,7 @@ import toast from "react-hot-toast";
 import { useNavigate, useRoutes } from "react-router-dom";
 import { useAuthContext } from "store/auth-conext";
 
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 
 const modalStyles: Styles = {
   overlay: {
