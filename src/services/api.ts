@@ -79,3 +79,28 @@ export const getFavorites = (username: string) =>
       return resolve(userData.data.favoriteBooks);
     }, 300);
   });
+
+export const getNotes = ({
+  book,
+  username,
+}: {
+  book: string;
+  username: string;
+}) =>
+  new Promise<{ bookId: string; notes: string }>((resolve, reject) => {
+    setTimeout(() => {
+      const users = JSON.parse(
+        window.localStorage.getItem("users") || "[]"
+      ) as User[];
+
+      const userData = users.find((user) => user.data.username === username);
+
+      if (!userData) {
+        return reject("User not found on database");
+      }
+
+      const notes = userData.data.notes.find((note) => note.bookId === book)!;
+
+      resolve(notes);
+    }, 300);
+  });

@@ -1,8 +1,10 @@
 import { Layout, LoadingScreen } from "components/layouts";
 import { StatusBook } from "components/modules";
+import { rqClient } from "lib/react-query";
 import { CircleNotch } from "phosphor-react";
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { useParams } from "react-router-dom";
+import { getNotes } from "services/api";
 import { Note, updateNotes } from "services/auth";
 import { useFetchBook } from "services/use-fetch-book";
 import { useAuthContext } from "store/auth-conext";
@@ -14,9 +16,17 @@ const BookPage = () => {
   const { user } = useAuthContext();
 
   const { data, isLoading, isError } = useFetchBook(id);
+  const notes = useQuery(["notes", id], () =>
+    getNotes({ book: id!, username: user?.username! })
+  );
 
-  const updateNote = useMutation((notes: Note) =>
-    updateNotes(user!.username, notes)
+  const updateNote = useMutation(
+    (notes: Note) => updateNotes(user!.username, notes),
+    {
+      onSuccess: () => {
+        rqClient.invalidateQueries(["notes", id]);
+      },
+    }
   );
 
   if (isLoading || !id) return <LoadingScreen />;
@@ -98,6 +108,7 @@ const BookPage = () => {
                   )}
                 </span>
                 <textarea
+                  defaultValue={notes.data?.notes}
                   onChange={debounce(
                     (e) =>
                       updateNote.mutate({ bookId: id, notes: e.target.value }),
