@@ -15,6 +15,7 @@ import { QueryClientProvider } from "react-query";
 
 import { ReactQueryDevtools } from "react-query/devtools";
 import { rqClient } from "lib/react-query";
+import { FavoritesPage } from "pages/favorites";
 
 const PathGuard = ({ children }: { children: JSX.Element }) => {
   const location = useLocation();
@@ -49,6 +50,14 @@ function App() {
               element={
                 <PathGuard>
                   <BookPage />
+                </PathGuard>
+              }
+            />
+            <Route
+              path="/favorites"
+              element={
+                <PathGuard>
+                  <FavoritesPage />
                 </PathGuard>
               }
             />
