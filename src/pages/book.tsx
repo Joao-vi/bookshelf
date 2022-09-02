@@ -1,19 +1,15 @@
 import { Layout, LoadingScreen } from "components/layouts";
-import { BookProps, StatusBook } from "components/modules";
-import { KEYS, rqClient } from "lib/react-query";
+import { StatusBook } from "components/modules";
 import { CircleNotch } from "phosphor-react";
-import toast from "react-hot-toast";
 import { useMutation } from "react-query";
 import { useParams } from "react-router-dom";
-import { addFavorite, AddFavoritesProps } from "services/api";
 import { Note, updateNotes } from "services/auth";
 import { useFetchBook } from "services/use-fetch-book";
-import { useFetchFavorites } from "services/use-fetch-favorites";
 import { useAuthContext } from "store/auth-conext";
 import { debounce } from "utils";
 import noCoverBook from "../../assets/no-cover-book.png";
 
-export const BookPage = () => {
+const BookPage = () => {
   const { id } = useParams();
   const { user } = useAuthContext();
 
@@ -122,3 +118,5 @@ export const BookPage = () => {
     </Layout>
   );
 };
+
+export { BookPage };

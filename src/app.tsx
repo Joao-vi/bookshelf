@@ -33,29 +33,29 @@ function App() {
     <QueryClientProvider client={rqClient}>
       <ReactQueryDevtools />
       <AuthProvider>
-          <Router>
-            <Routes>
-              <Route path="/" element={<LoginPage />} />
-              <Route
-                path="/browse"
-                element={
-                  <PathGuard>
-                    <BrowsePage />
-                  </PathGuard>
-                }
-              />
-              <Route
-                path="/book/:id"
-                element={
-                  <PathGuard>
-                    <BookPage />
-                  </PathGuard>
-                }
-              />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-            <Toaster toastOptions={{ duration: 3000 }} />
-          </Router>
+        <Router>
+          <Routes>
+            <Route path="/" element={<LoginPage />} />
+            <Route
+              path="/browse"
+              element={
+                <PathGuard>
+                  <BrowsePage />
+                </PathGuard>
+              }
+            />
+            <Route
+              path="/book/:id"
+              element={
+                <PathGuard>
+                  <BookPage />
+                </PathGuard>
+              }
+            />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+          <Toaster toastOptions={{ duration: 3000 }} />
+        </Router>
       </AuthProvider>
     </QueryClientProvider>
   );
