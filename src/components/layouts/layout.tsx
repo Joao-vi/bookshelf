@@ -1,6 +1,6 @@
 import { Button } from "components/elements";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowRight, SignOut, User } from "phosphor-react";
+import { ArrowRight, Bookmark, SignOut, User } from "phosphor-react";
 import { ReactNode } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useAuthContext } from "store/auth-conext";
@@ -25,6 +25,7 @@ export const Layout = ({ children }: LayoutProps) => {
   hover:bg-button hover:text-gray-100 transition`;
 
   const selectedStyle = `bg-highlight px-3 py-1 rounded-lg text-gray-100 `;
+
   return (
     <motion.div
       initial={{ y: 20, opacity: 0 }}
@@ -46,13 +47,16 @@ export const Layout = ({ children }: LayoutProps) => {
           {pathname.includes("/book") && (
             <>
               <ArrowRight weight="bold" />
-              <NavLink
-                to="/book"
-                className={
-                  pathname.includes("/book") ? selectedStyle : unselectedStyle
-                }
-              >
+              <NavLink to="/book" className={selectedStyle}>
                 Book
+              </NavLink>
+            </>
+          )}
+          {pathname.includes("/favorites") && (
+            <>
+              <ArrowRight weight="bold" />
+              <NavLink to="/book" className={selectedStyle}>
+                Favorites
               </NavLink>
             </>
           )}
@@ -64,6 +68,15 @@ export const Layout = ({ children }: LayoutProps) => {
             {user.username}
           </span>
         )}
+
+        <NavLink
+          to="/favorites"
+          className="self-stretch bg-card rounded px-2 flex items-center gap-1"
+        >
+          <Bookmark size={18} weight="bold" />
+          Favorites
+        </NavLink>
+
         <Button
           className="flex gap-1 items-center"
           variant="highlight"
@@ -72,7 +85,9 @@ export const Layout = ({ children }: LayoutProps) => {
           Logout <SignOut size={18} weight="bold" />
         </Button>
       </header>
+
       <AnimatePresence>{children}</AnimatePresence>
+
       <footer className="mt-auto border-t p-3 text-center font-medium text-slate-400">
         <span>Bookshelf</span>
       </footer>

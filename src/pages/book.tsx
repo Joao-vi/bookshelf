@@ -112,7 +112,7 @@ const BookPage = () => {
                   onChange={debounce(
                     (e) =>
                       updateNote.mutate({ bookId: id, notes: e.target.value }),
-                    2000
+                    1000
                   )}
                   className="w-full min-h-[200px] bg-[rgb(237,232,226)] rounded p-3  
                 outline-none transition-hover-focus shadow-hover-focus-idle hover:shadow-hover-on focus:shadow-focus-on"

@@ -2,6 +2,7 @@ import { Input } from "components/elements";
 import { Layout } from "components/layouts/layout";
 
 import { Book } from "components/modules";
+import { Pagination } from "components/modules/pagination";
 import { AnimatePresence, motion } from "framer-motion";
 import { CircleNotch, MagnifyingGlass, X } from "phosphor-react";
 import { FormEvent, useState } from "react";
@@ -15,13 +16,14 @@ const parentVariant = {
   visible: {
     transition: {
       delayChildren: 0.3,
-      staggerChildren: 0.2
-    }
+      staggerChildren: 0.2,
+    },
   },
 };
 
 const BrowsePage = () => {
   const [query, setQuery] = useState("");
+  const [page, setPage] = useState(1);
   const { data, isError, isLoading, isIdle, isSuccess, error } =
     useFetchBook(query);
 
@@ -80,6 +82,15 @@ const BrowsePage = () => {
             )
           ) : null}
         </motion.ul>
+
+        {!!data && (
+          <Pagination
+            hasPrev={page > 1}
+            hasNext={true}
+            onPrev={() => setPage((state) => state - 1)}
+            onNext={() => setPage((state) => state + 1)}
+          />
+        )}
       </div>
     </Layout>
   );

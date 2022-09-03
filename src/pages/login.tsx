@@ -9,7 +9,7 @@ import Modal from "react-modal";
 import { Styles } from "react-modal";
 import { login, register } from "services/auth";
 import toast from "react-hot-toast";
-import { useNavigate, useRoutes } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "store/auth-conext";
 
 import { motion } from "framer-motion";
@@ -60,7 +60,6 @@ export function LoginPage() {
   const push = useNavigate();
   const [isOpen, setIsOpen] = useState<IsOpen>("none");
   const [status, setStatus] = useState<Status>("idle");
-  const [error, setError] = useState("");
 
   const handleLogin = (props: OnSubmitProps) => {
     setStatus("loading");

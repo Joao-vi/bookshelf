@@ -144,5 +144,5 @@ export const updateNotes = (username: string, newNotes: Note) =>
 
       window.localStorage.setItem("users", JSON.stringify(newUsers));
       resolve(newState.find((note) => note.bookId === newNotes.bookId));
-    }, 250);
+    }, 450);
   });

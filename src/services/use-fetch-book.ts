@@ -15,7 +15,7 @@ const fetchBook = async ({ queryKey }: QueryFunctionContext) => {
   return data;
 };
 
-export const useFetchBook = (query?: string) =>
+export const useFetchBook = (query?: string, page?: number) =>
   useQuery<BookData, any>([KEYS.BOOKS, query], fetchBook, {
     enabled: query !== undefined,
   });
