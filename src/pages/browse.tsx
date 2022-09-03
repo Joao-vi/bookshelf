@@ -3,7 +3,7 @@ import { Layout } from "components/layouts/layout";
 
 import { Book } from "components/modules";
 import { Pagination } from "components/modules/pagination";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { CircleNotch, MagnifyingGlass, X } from "phosphor-react";
 import { FormEvent, useState } from "react";
 import { useFetchBook } from "services/use-fetch-book";
@@ -24,8 +24,10 @@ const parentVariant = {
 const BrowsePage = () => {
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
-  const { data, isError, isLoading, isIdle, isSuccess, error } =
-    useFetchBook(query);
+  const { data, isError, isLoading, isIdle, isSuccess, error } = useFetchBook(
+    query,
+    page
+  );
 
   const handleSearch = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -86,7 +88,7 @@ const BrowsePage = () => {
         {!!data && (
           <Pagination
             hasPrev={page > 1}
-            hasNext={true}
+            hasNext={page <= data.totalPages}
             onPrev={() => setPage((state) => state - 1)}
             onNext={() => setPage((state) => state + 1)}
           />

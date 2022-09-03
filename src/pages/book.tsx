@@ -16,6 +16,7 @@ const BookPage = () => {
   const { user } = useAuthContext();
 
   const { data, isLoading, isError } = useFetchBook(id);
+
   const notes = useQuery(["notes", id], () =>
     getNotes({ book: id!, username: user?.username! })
   );
@@ -34,20 +35,20 @@ const BookPage = () => {
   return (
     <Layout>
       <section className="max-w-[1400px] w-full mx-auto">
-        {!isError && !!data ? (
+        {!isError && !!data?.items[0] ? (
           <article className="flex items-start gap-4 py-10 px-5 bg-slate-50 rounded shadow-sm">
             <img
               className="rounded"
               src={
-                data?.items[0].volumeInfo?.imageLinks?.thumbnail || noCoverBook
+                data.items[0].volumeInfo?.imageLinks?.thumbnail || noCoverBook
               }
-              alt={data?.items[0].volumeInfo.title}
+              alt={data.items[0].volumeInfo.title}
             />
 
-            <main className="flex flex-col gap-2">
+            <main className="w-full flex flex-col gap-2">
               <header className="flex justify-between items-center">
                 <h1 className="font-bold text-2xl">
-                  {data?.items[0].volumeInfo.title}
+                  {data.items[0].volumeInfo.title}
                 </h1>
                 <StatusBook
                   book={{ ...data.items[0].volumeInfo, id }}
@@ -58,7 +59,7 @@ const BookPage = () => {
               <div>
                 <span className="text-headline">Description</span>
                 <p className="font-medium">
-                  {data?.items[0].volumeInfo.description}
+                  {data.items[0].volumeInfo.description}
                 </p>
               </div>
 
@@ -66,7 +67,7 @@ const BookPage = () => {
                 <span className="text-headline block">General info</span>
                 <span>
                   Authors:{" "}
-                  {data?.items[0].volumeInfo.authors.map((author) => (
+                  {data.items[0].volumeInfo?.authors?.map((author) => (
                     <span className="font-medium" key={author}>
                       {author}
                     </span>
@@ -76,26 +77,26 @@ const BookPage = () => {
                 <span>
                   Publisher:{" "}
                   <span className="font-medium">
-                    {data?.items[0].volumeInfo.publisher}
+                    {data.items[0].volumeInfo.publisher}
                   </span>
                 </span>{" "}
                 |{" "}
                 <span>
                   Published At:{" "}
                   <span className="font-medium">
-                    {data?.items[0].volumeInfo.publishedDate}
+                    {data.items[0].volumeInfo.publishedDate}
                   </span>
                 </span>
                 <span className="block">
                   Language:{" "}
                   <span className="font-medium">
-                    {data?.items[0].volumeInfo.language.toUpperCase()}
+                    {data.items[0].volumeInfo.language.toUpperCase()}
                   </span>
                 </span>
                 <span className="block">
                   Pages:{" "}
                   <span className="font-medium">
-                    {data?.items[0].volumeInfo.pageCount}
+                    {data.items[0].volumeInfo.pageCount}
                   </span>
                 </span>
               </div>

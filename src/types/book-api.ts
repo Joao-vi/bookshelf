@@ -2,6 +2,7 @@ export interface BookData {
   kind: string;
   totalItems: number;
   items: Item[];
+  totalPages: number;
 }
 
 export interface Item {

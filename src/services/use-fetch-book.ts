@@ -4,18 +4,20 @@ import { BookData } from "types";
 import { booksAPI } from "./api";
 
 const fetchBook = async ({ queryKey }: QueryFunctionContext) => {
-  const [_, query] = queryKey as string[];
+  const [_, key] = queryKey as any;
 
   const { data } = await booksAPI.get<BookData>("/volumes", {
     params: {
-      q: query || ".",
+      q: key.query || "a",
+      startIndex: key.page,
     },
   });
 
-  return data;
+  const totalPages = Math.ceil(data.totalItems / data.items.length);
+  return { ...data, totalPages };
 };
 
-export const useFetchBook = (query?: string, page?: number) =>
-  useQuery<BookData, any>([KEYS.BOOKS, query], fetchBook, {
+export const useFetchBook = (query?: string, page = 0) =>
+  useQuery<BookData, any>([KEYS.BOOKS, { query, page }], fetchBook, {
     enabled: query !== undefined,
   });
