@@ -10,7 +10,7 @@ import {
 import { AuthProvider, useAuthContext } from "store/auth-conext";
 
 import { BookPage } from "pages/book";
-import { NotFound } from "pages/404";
+import { NotFound } from "pages/not-found";
 import { QueryClientProvider } from "react-query";
 
 import { ReactQueryDevtools } from "react-query/devtools";
