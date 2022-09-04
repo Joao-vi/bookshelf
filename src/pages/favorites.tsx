@@ -1,33 +1,27 @@
 import { Input } from "components/elements";
 import { Layout } from "components/layouts";
 import { Book } from "components/modules";
-import { FormEvent, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useFetchFavorites } from "services/use-fetch-favorites";
-
-type SearchFavoriteFormElements = {
-  search: HTMLInputElement;
-} & HTMLFormControlsCollection;
 
 const FavoritesPage = () => {
   const [query, setQuery] = useState("");
 
   const { data, isLoading, isError, error } = useFetchFavorites();
 
-  const handleSearchFavorite = (e: FormEvent<HTMLFormElement>) => {
-    const { search } = e.currentTarget.elements as SearchFavoriteFormElements;
-    setQuery(search.value);
-  };
-
   const filteredData = useMemo(() => {
-    return data?.filter((fav) => fav.title.includes(query));
+    return data?.filter((fav) =>
+      fav.title.toUpperCase().includes(query.toUpperCase())
+    );
   }, [query, data]);
 
   return (
     <Layout>
       <main className="mx-auto max-w-[1400px] flex flex-col gap-8 justify-start items-center px-4">
-        <form onSubmit={handleSearchFavorite}>
-          <Input id="search" placeholder="Search on favorites" />
-        </form>
+        <Input
+          placeholder="Search on favorites"
+          onChange={(e) => setQuery(e.target.value)}
+        />
 
         {isError && (
           <div className="text-red-500 font-medium text-center">
