@@ -30,47 +30,47 @@ const PathGuard = ({ children }: { children: JSX.Element }) => {
 };
 
 const MyRoutes = () => (
-  <Router>
-    <Routes>
-      <Route path="/" element={<LoginPage />} />
-      <Route
-        path="/browse"
-        element={
-          <PathGuard>
-            <BrowsePage />
-          </PathGuard>
-        }
-      />
-      <Route
-        path="/book/:id"
-        element={
-          <PathGuard>
-            <BookPage />
-          </PathGuard>
-        }
-      />
-      <Route
-        path="/favorites"
-        element={
-          <PathGuard>
-            <FavoritesPage />
-          </PathGuard>
-        }
-      />
-      <Route path="*" element={<NotFound />} />
-    </Routes>
-  </Router>
+  <Routes>
+    <Route path="/" element={<LoginPage />} />
+    <Route
+      path="/browse"
+      element={
+        <PathGuard>
+          <BrowsePage />
+        </PathGuard>
+      }
+    />
+    <Route
+      path="/book/:id"
+      element={
+        <PathGuard>
+          <BookPage />
+        </PathGuard>
+      }
+    />
+    <Route
+      path="/favorites"
+      element={
+        <PathGuard>
+          <FavoritesPage />
+        </PathGuard>
+      }
+    />
+    <Route path="*" element={<NotFound />} />
+  </Routes>
 );
 
 function App() {
   return (
-    <QueryClientProvider client={rqClient}>
-      <ReactQueryDevtools />
-      <AuthProvider>
-        <MyRoutes />
-        <Toaster toastOptions={{ duration: 3000 }} />
-      </AuthProvider>
-    </QueryClientProvider>
+    <Router>
+      <QueryClientProvider client={rqClient}>
+        <ReactQueryDevtools />
+        <AuthProvider>
+          <MyRoutes />
+          <Toaster toastOptions={{ duration: 3000 }} />
+        </AuthProvider>
+      </QueryClientProvider>
+    </Router>
   );
 }
 
